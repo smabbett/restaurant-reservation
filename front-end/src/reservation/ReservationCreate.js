@@ -31,13 +31,14 @@ function ReservationCreate() {
     return () => abortController.abort();
   }
 
-  function changeHandler({ target: { name, value } }) {
-    if (target.type === 'number') {
-      value = Number(value);
+  function changeHandler({ target }) {
+    let newValue = target.value;
+    if (target.name === 'people') {
+      newValue = Number(target.value);
     }
     setReservation((previousReservation) => ({
       ...previousReservation,
-      [name]: value,
+      [target.name]: newValue,
     }));
   }
 

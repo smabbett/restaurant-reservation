@@ -52,33 +52,24 @@ const hasRequiredProperties = hasProperties(
 
 function hasPeople(req, res, next) {
   const { people } = req.body.data;
-  console.log('people', typeof people);
   const validNumber = Number.isInteger(people);
-  console.log('isInt', validNumber);
   if (!validNumber || people <= 0) {
     return next({
       status: 400,
       message: 'Number of people entered is an invalid number.',
     });
   }
-
   next();
 }
 
 function hasValidDateTime(req, res, next) {
   const { reservation_date, reservation_time } = req.body.data;
   const res_date = new Date(reservation_date);
-  console.log('reservation_date', reservation_date);
-  console.log('date', res_date);
-  //removes the hours for comparison of dates
-  //date.setHours(0, 0, 0, 0);
+
   const currentDate = new Date();
-  console.log('currentDate', currentDate);
-  const currentTime = today.toISOString().substr(11, 5);
-  console.log('currentTime', currentTime);
-  console.log('reservation_time', reservation_time);
-  //today.setHours(0, 0, 0, 0);
-  //validate time HH:MM
+
+  const currentTime = currentDate.toISOString().substr(11, 5);
+
   const timeReg = /^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
   const res_time = reservation_time.match(timeReg);
 
@@ -94,19 +85,22 @@ function hasValidDateTime(req, res, next) {
       message: 'Reservation must be between 10:30AM and 9:30PM.',
     });
   }
-  if (date < today || (date === today && reservation_time < currentTime)) {
+  if (
+    res_date < currentDate ||
+    (res_date === currentDate && reservation_time < currentTime)
+  ) {
     return next({
       status: 400,
       message: 'Reservation must be booked for future date.',
     });
   }
-  if (!date.toISOString()) {
+  if (!res_date.toISOString()) {
     return next({
       status: 400,
       message: 'Reservation date is not a valid date.',
     });
   }
-  if (date.getDay() === '2') {
+  if (res_date.getDay() === '2') {
     return next({
       status: 400,
       message: 'Reservations not allowed on Tuesdays.',
@@ -114,32 +108,6 @@ function hasValidDateTime(req, res, next) {
   }
   next();
 }
-
-// function hasValidDate(req, res, next) {
-//   const { reservation_date, reservation_time } = req.body.data;
-//   const date = new Date(reservation_date);
-//   const today = new Date();
-//   console.log(today.getTime());
-//   if (date < today || (date === today && reservation_time < today.getTime())) {
-//     return next({
-//       status: 400,
-//       message: 'Reservation must be booked for future date.',
-//     });
-//   }
-//   if (!datetoISOString()) {
-//     return next({
-//       status: 400,
-//       message: 'Reservation date is not a valid date.',
-//     });
-//   }
-//   if (date.getDay() === '2') {
-//     return next({
-//       status: 400,
-//       message: 'Reservations not allowed on Tuesdays.',
-//     });
-//   }
-//   next();
-// }
 
 //how do I use utils/date-time.js ??
 

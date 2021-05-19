@@ -50,6 +50,7 @@
   "license": "UNLICENSED",
   "dependencies": {
     "knex": "^0.95.5",
+    "nodemon": "^2.0.7",
     "pg": "^8.6.0"
   }
 }
