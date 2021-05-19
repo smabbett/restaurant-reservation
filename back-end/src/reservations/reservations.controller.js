@@ -1,12 +1,164 @@
+const service = require('./reservations.service');
+const hasProperties = require('../errors/hasProperties');
+const asyncErrorBoundary = require('../errors/asyncErrorBoundary');
+
 /**
  * List handler for reservation resources
  */
 async function list(req, res) {
-  res.json({
-    data: [],
+  res.json({ data: await service.list() });
+}
+
+async function listByDate(req, res) {
+  const { reservation_date } = req.query;
+
+  if (reservation_date) {
+    res.json({ data: await service.listByDate(reservation_date) });
+  } else {
+    res.json({ data: await service.list() });
+  }
+}
+
+const VALID_PROPERTIES = [
+  'first_name',
+  'last_name',
+  'mobile_number',
+  'reservation_date',
+  'reservation_time',
+  'people',
+];
+
+function hasOnlyValidProperties(req, res, next) {
+  const { data = {} } = req.body;
+  const invalidFields = Object.keys(data).filter((field) => {
+    !VALID_PROPERTIES.includes(field);
+  });
+  if (invalidFields.length)
+    return next({
+      status: 400,
+      message: `Invalid field(s): ${invalidFields.join(',')}`,
+    });
+  next();
+}
+
+const hasRequiredProperties = hasProperties(
+  'first_name',
+  'last_name',
+  'mobile_number',
+  'reservation_date',
+  'reservation_time',
+  'people'
+);
+
+function hasPeople(req, res, next) {
+  const { people } = req.body.data;
+  console.log('people', typeof people);
+  const validNumber = Number.isInteger(people);
+  console.log('isInt', validNumber);
+  if (!validNumber || people <= 0) {
+    return next({
+      status: 400,
+      message: 'Number of people entered is an invalid number.',
+    });
+  }
+
+  next();
+}
+
+function hasValidDateTime(req, res, next) {
+  const { reservation_date, reservation_time } = req.body.data;
+  const res_date = new Date(reservation_date);
+  console.log('reservation_date', reservation_date);
+  console.log('date', res_date);
+  //removes the hours for comparison of dates
+  //date.setHours(0, 0, 0, 0);
+  const currentDate = new Date();
+  console.log('currentDate', currentDate);
+  const currentTime = today.toISOString().substr(11, 5);
+  console.log('currentTime', currentTime);
+  console.log('reservation_time', reservation_time);
+  //today.setHours(0, 0, 0, 0);
+  //validate time HH:MM
+  const timeReg = /^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
+  const res_time = reservation_time.match(timeReg);
+
+  if (!res_time) {
+    return next({
+      status: 400,
+      message: `reservation_time is not a valid time.`,
+    });
+  }
+  if (reservation_time < '10:30' || reservation_time > '21:30') {
+    return next({
+      status: 400,
+      message: 'Reservation must be between 10:30AM and 9:30PM.',
+    });
+  }
+  if (date < today || (date === today && reservation_time < currentTime)) {
+    return next({
+      status: 400,
+      message: 'Reservation must be booked for future date.',
+    });
+  }
+  if (!date.toISOString()) {
+    return next({
+      status: 400,
+      message: 'Reservation date is not a valid date.',
+    });
+  }
+  if (date.getDay() === '2') {
+    return next({
+      status: 400,
+      message: 'Reservations not allowed on Tuesdays.',
+    });
+  }
+  next();
+}
+
+// function hasValidDate(req, res, next) {
+//   const { reservation_date, reservation_time } = req.body.data;
+//   const date = new Date(reservation_date);
+//   const today = new Date();
+//   console.log(today.getTime());
+//   if (date < today || (date === today && reservation_time < today.getTime())) {
+//     return next({
+//       status: 400,
+//       message: 'Reservation must be booked for future date.',
+//     });
+//   }
+//   if (!datetoISOString()) {
+//     return next({
+//       status: 400,
+//       message: 'Reservation date is not a valid date.',
+//     });
+//   }
+//   if (date.getDay() === '2') {
+//     return next({
+//       status: 400,
+//       message: 'Reservations not allowed on Tuesdays.',
+//     });
+//   }
+//   next();
+// }
+
+//how do I use utils/date-time.js ??
+
+async function create(req, res) {
+  const newReservation = await service.create(req.body.data);
+  res.status(201).json({
+    data: newReservation[0],
   });
 }
 
 module.exports = {
-  list,
+  list: asyncErrorBoundary(list),
+  create: [
+    hasOnlyValidProperties,
+    hasRequiredProperties,
+    hasPeople,
+    hasValidDateTime,
+    //hasValidDate,
+    asyncErrorBoundary(create),
+  ],
+  listByDate: asyncErrorBoundary(listByDate),
 };

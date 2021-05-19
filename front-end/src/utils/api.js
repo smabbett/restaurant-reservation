@@ -2,17 +2,17 @@
  * Defines the base URL for the API.
  * The default values is overridden by the `API_BASE_URL` environment variable.
  */
-import formatReservationDate from "./format-reservation-date";
-import formatReservationTime from "./format-reservation-date";
+import formatReservationDate from './format-reservation-date';
+import formatReservationTime from './format-reservation-date';
 
 const API_BASE_URL =
-  process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
+  process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
 
 /**
  * Defines the default headers for these functions to work with `json-server`
  */
 const headers = new Headers();
-headers.append("Content-Type", "application/json");
+headers.append('Content-Type', 'application/json');
 
 /**
  * Fetch `json` from the specified URL and handle error status codes and ignore `AbortError`s
@@ -44,7 +44,7 @@ async function fetchJson(url, options, onCancel) {
     }
     return payload.data;
   } catch (error) {
-    if (error.name !== "AbortError") {
+    if (error.name !== 'AbortError') {
       console.error(error.stack);
       throw error;
     }
@@ -66,4 +66,32 @@ export async function listReservations(params, signal) {
   return await fetchJson(url, { headers, signal }, [])
     .then(formatReservationDate)
     .then(formatReservationTime);
+}
+
+// function nextId() {
+//   const uint32 = window.crypto.getRandomValues(new Uint32Array(1))[0];
+//   return uint32.toString(16);
+// }
+
+export async function createReservation(reservation, signal) {
+  // const now = new Date().toISOString();
+  // const newReservation = {
+  //   ...reservation,
+  //   reservation_id: nextId(),
+  //   created_at: now,
+  //   updated_at: now,
+  // };
+
+  const url = `${API_BASE_URL}/reservations`;
+  const options = {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ data: reservation }),
+    //body: JSON.stringify(reservation),
+    signal,
+  };
+  // reservations.push(newReservation);
+  // return newReservation;
+
+  return await fetchJson(url, options);
 }
