@@ -10,10 +10,11 @@ async function list(req, res) {
 }
 
 async function listByDate(req, res) {
-  const { reservation_date } = req.query;
+  // const { reservation_date } = req.query;
+  const { date } = req.query;
 
-  if (reservation_date) {
-    res.json({ data: await service.listByDate(reservation_date) });
+  if (date) {
+    res.json({ data: await service.listByDate(date) });
   } else {
     res.json({ data: await service.list() });
   }
@@ -64,16 +65,18 @@ function hasPeople(req, res, next) {
 
 function hasValidDateTime(req, res, next) {
   const { reservation_date, reservation_time } = req.body.data;
-  const res_date = new Date(reservation_date);
-
-  const currentDate = new Date();
-
-  const currentTime = currentDate.toISOString().substr(11, 5);
+  //adjusting the reservation_date to add timestamp, end of day
+  let fix_date = reservation_date + ' 23:59:59.999Z';
+  let res_date = new Date(fix_date);
+  let currentDate = new Date();
+  let currentTime = currentDate.getHours() + ':' + currentDate.getMinutes();
+  //setHours to 0 so we can compare dates without time
+  res_date.setHours(0, 0, 0, 0);
+  currentDate.setHours(0, 0, 0, 0);
 
   const timeReg = /^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
-  const res_time = reservation_time.match(timeReg);
 
-  if (!res_time) {
+  if (reservation_time.match(timeReg) === null) {
     return next({
       status: 400,
       message: `reservation_time is not a valid time.`,
@@ -86,21 +89,22 @@ function hasValidDateTime(req, res, next) {
     });
   }
   if (
-    res_date < currentDate ||
-    (res_date === currentDate && reservation_time < currentTime)
+    res_date.getTime() < currentDate.getTime() ||
+    (res_date.getTime() === currentDate.getTime() &&
+      reservation_time < currentTime)
   ) {
     return next({
       status: 400,
       message: 'Reservation must be booked for future date.',
     });
   }
-  if (!res_date.toISOString()) {
+  if (!res_date.getTime()) {
     return next({
       status: 400,
       message: 'Reservation date is not a valid date.',
     });
   }
-  if (res_date.getDay() === '2') {
+  if (res_date.getUTCDay() === 2) {
     return next({
       status: 400,
       message: 'Reservations not allowed on Tuesdays.',
@@ -108,8 +112,6 @@ function hasValidDateTime(req, res, next) {
   }
   next();
 }
-
-//how do I use utils/date-time.js ??
 
 async function create(req, res) {
   const newReservation = await service.create(req.body.data);
@@ -125,7 +127,6 @@ module.exports = {
     hasRequiredProperties,
     hasPeople,
     hasValidDateTime,
-    //hasValidDate,
     asyncErrorBoundary(create),
   ],
   listByDate: asyncErrorBoundary(listByDate),
