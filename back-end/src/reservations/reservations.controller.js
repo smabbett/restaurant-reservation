@@ -101,13 +101,13 @@ function hasValidDateTime(req, res, next) {
   if (!res_date.getTime()) {
     return next({
       status: 400,
-      message: 'Reservation date is not a valid date.',
+      message: 'reservation_date is not a valid date.',
     });
   }
   if (res_date.getUTCDay() === 2) {
     return next({
       status: 400,
-      message: 'Reservations not allowed on Tuesdays.',
+      message: 'Restaurant closed on Tuesdays.',
     });
   }
   next();
