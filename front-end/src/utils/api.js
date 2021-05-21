@@ -95,3 +95,34 @@ export async function createReservation(reservation, signal) {
 
   return await fetchJson(url, options);
 }
+
+// const tables = [];
+
+export async function createTable(table, signal) {
+  // const now = new Date().toISOString();
+  // const newTable = {
+  //   ...table,
+  //   table_id: nextId(),
+  //   created_at: now,
+  //   updated_at: now,
+  // };
+  const url = `${API_BASE_URL}/tables`;
+  const options = {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ data: table }),
+    signal,
+  };
+  // tables.push(newTable);
+  // return newTable;
+  return await fetchJson(url, options);
+}
+
+export async function listTables(signal) {
+  const url = `${API_BASE_URL}/tables`;
+  const options = {
+    headers,
+    signal,
+  };
+  return await fetchJson(url, options);
+}
