@@ -46,10 +46,11 @@ function TableSeating() {
 
   function submitHandler(event) {
     event.preventDefault();
+    console.log('formData', parseInt(formData.table_id));
     if (formData.table_id !== 'x') {
       const abortController = new AbortController();
       updateTable(
-        formData.table_id,
+        parseInt(formData.table_id),
         reservation.reservation_id,
         abortController.signal
       ).then(() => {
@@ -70,52 +71,59 @@ function TableSeating() {
     <main className="container">
       <ErrorAlert error={error} />
       <section className="row">
-        <div key={reservation.reservation_id} className="card col-md-10">
+        <div key={reservation.reservation_id} className="card col-md-3">
           <div className="card-header">
-            {reservation.first_name} {reservation.last_name}{' '}
+            <h5>
+              {reservation.first_name} {reservation.last_name}
+            </h5>
           </div>
           <div className="card-body">
             <p>{reservation.mobile_number}</p>
             <p>Party of {reservation.people}</p>
           </div>
         </div>
-      </section>
-      <section className="row">
-        {/* <div className="card col-md-10">
-          <div className="card-body"> */}
-        <form className="mb-4" onSubmit={submitHandler}>
-          {/* <div className="row mb-3"> */}
-          <div className="col-md-10 form-group">
-            <label className="input-group-text" htmlFor="inputGroupSelect01">
-              Open tables
-            </label>
-            <select
-              onChange={changeHandler}
-              className="custom-select"
-              id="inputGroupSelect01"
-              name="table_id"
-            >
-              <option value="x">Choose a table...</option>
-              {list}
-            </select>
-            <button type="submit" className="btn btn-primary">
-              Submit
-            </button>
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={cancelHandler}
-            >
-              Cancel
-            </button>
+        {/* </section>
+      <section className="row"> */}
+        <div className="card col-md-5">
+          <div className="card-body">
+            <form onSubmit={submitHandler}>
+              {/* <div className="row mb-3"> */}
+              <div className="form-group">
+                <label
+                  className="input-group-text"
+                  htmlFor="inputGroupSelect01"
+                >
+                  Open tables
+                </label>
+                <select
+                  onChange={changeHandler}
+                  className="custom-select"
+                  id="inputGroupSelect01"
+                  name="table_id"
+                >
+                  <option value="x">Choose a table...</option>
+                  {list}
+                </select>
+              </div>
+              <div>
+                <button type="submit" className="btn btn-primary">
+                  Submit
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={cancelHandler}
+                >
+                  Cancel
+                </button>
+              </div>
+              {/* </div> */}
+            </form>
+            <div className="input-group mb-3">
+              <div className="input-group-prepend"></div>
+            </div>
           </div>
-          {/* </div> */}
-        </form>
-        <div className="input-group mb-3">
-          <div className="input-group-prepend"></div>
         </div>
-        {/* </div>
-        </div> */}
       </section>
     </main>
   );

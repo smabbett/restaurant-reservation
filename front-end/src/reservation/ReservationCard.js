@@ -15,7 +15,7 @@ function ReservationCard({ reservation }) {
       <td>{reservation.people}</td>
       <td>
         <Link
-          className="btn btn-info mr-2"
+          className="btn btn-primary mr-2"
           to={`reservations/${reservation.reservation_id}/seat`}
         >
           Seat

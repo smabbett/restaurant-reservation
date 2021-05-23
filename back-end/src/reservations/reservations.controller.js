@@ -10,7 +10,6 @@ async function list(req, res) {
 }
 
 async function listByDate(req, res) {
-  // const { reservation_date } = req.query;
   const { date } = req.query;
 
   if (date) {

@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from '../utils/class-names';
 
 function TableList({ tables }) {
   const tableRows = tables.map((table) => (
@@ -6,7 +7,13 @@ function TableList({ tables }) {
       {/* <th scope="row">{table.table_id}</th> */}
       <td>{table.table_name}</td>
       <td>{table.capacity}</td>
-      <td data-table-id-status={table.table_id}>
+      <td
+        data-table-id-status={table.table_id}
+        className={classNames({
+          'bg-danger': table.reservation_id,
+          'bg-success': !table.reservation_id,
+        })}
+      >
         {table.reservation_id ? 'Occupied' : 'Free'}
       </td>
     </tr>
