@@ -29,6 +29,15 @@ const VALID_PROPERTIES = [
   'people',
 ];
 
+async function reservationExists(req, res, next) {
+  const { reservation_id } = req.params;
+  const reservation = await service.read(reservation_id);
+  if (reservation) {
+    res.locals.reservation = reservation;
+    return next();
+  }
+  next({ status: 404, message: 'Reservation cannot be found.' });
+}
 function hasOnlyValidProperties(req, res, next) {
   const { data = {} } = req.body;
   const invalidFields = Object.keys(data).filter((field) => {
@@ -120,6 +129,11 @@ async function create(req, res) {
   });
 }
 
+async function read(req, res, next) {
+  const { reservation } = res.locals;
+  res.json({ data: reservation });
+}
+
 module.exports = {
   list: asyncErrorBoundary(list),
   create: [
@@ -130,4 +144,5 @@ module.exports = {
     asyncErrorBoundary(create),
   ],
   listByDate: asyncErrorBoundary(listByDate),
+  read: [asyncErrorBoundary(reservationExists), read],
 };

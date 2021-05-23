@@ -13,7 +13,7 @@ function TableCreate() {
   });
 
   function cancelHandler() {
-    history.push('/');
+    history.goBack();
   }
 
   function submitHandler(event) {
