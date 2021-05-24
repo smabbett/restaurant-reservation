@@ -1,7 +1,22 @@
 import React from 'react';
+import { updateTable } from '../utils/api';
 import classNames from '../utils/class-names';
+import { useHistory } from 'react-router-dom';
 
 function TableList({ tables }) {
+  const history = useHistory();
+
+  function finishTable(table) {
+    console.log('finish', table.reservation_id);
+    // const abortController = new AbortController();
+    // updateTable(
+    //   table.table_id,
+    //   table.reservation_id,
+    //   abortController.signal
+    // ).then(() => {
+    //   history.push('/');
+    // });
+  }
   const tableRows = tables.map((table) => (
     <tr key={table.table_id}>
       {/* <th scope="row">{table.table_id}</th> */}
@@ -15,6 +30,18 @@ function TableList({ tables }) {
         })}
       >
         {table.reservation_id ? 'Occupied' : 'Free'}
+      </td>
+      <td>
+        {table.reservation_id && (
+          // <button className="btn btn-primary" onClick={finishTable}>
+          <button
+            data-table-id-finish={table.table_id}
+            className="btn btn-primary"
+            onClick={finishTable(table)}
+          >
+            Finish
+          </button>
+        )}
       </td>
     </tr>
   ));

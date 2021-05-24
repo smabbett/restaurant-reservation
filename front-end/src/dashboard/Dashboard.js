@@ -76,15 +76,9 @@ function Dashboard({ date }) {
           </button>
         </div>
       </div>
-      {/* <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for {date}</h4>
-      </div> */}
-
       <ErrorAlert error={reservationsError} />
       <ReservationList reservations={reservations} />
       <TableList tables={tables} />
-
-      {/* {JSON.stringify(reservations)} */}
     </main>
   );
 }

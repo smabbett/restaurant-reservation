@@ -46,7 +46,6 @@ function TableSeating() {
 
   function submitHandler(event) {
     event.preventDefault();
-    console.log('formData', parseInt(formData.table_id));
     if (formData.table_id !== 'x') {
       const abortController = new AbortController();
       updateTable(

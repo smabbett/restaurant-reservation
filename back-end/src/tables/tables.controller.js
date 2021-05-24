@@ -49,7 +49,6 @@ async function reservationExists(req, res, next) {
   const reservation = await readReservation(reservation_id);
   if (reservation) {
     res.locals.reservation = reservation;
-    console.log('here', res.locals.reservation);
     return next();
   }
   return next({
