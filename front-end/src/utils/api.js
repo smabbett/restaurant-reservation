@@ -68,44 +68,18 @@ export async function listReservations(params, signal) {
     .then(formatReservationTime);
 }
 
-// function nextId() {
-//   const uint32 = window.crypto.getRandomValues(new Uint32Array(1))[0];
-//   return uint32.toString(16);
-// }
-
 export async function createReservation(reservation, signal) {
-  // const now = new Date().toISOString();
-  // const newReservation = {
-  //   ...reservation,
-  //   reservation_id: nextId(),
-  //   created_at: now,
-  //   updated_at: now,
-  // };
-
   const url = `${API_BASE_URL}/reservations`;
   const options = {
     method: 'POST',
     headers,
     body: JSON.stringify({ data: reservation }),
-    //body: JSON.stringify(reservation),
     signal,
   };
-  // reservations.push(newReservation);
-  // return newReservation;
-
   return await fetchJson(url, options);
 }
 
-// const tables = [];
-
 export async function createTable(table, signal) {
-  // const now = new Date().toISOString();
-  // const newTable = {
-  //   ...table,
-  //   table_id: nextId(),
-  //   created_at: now,
-  //   updated_at: now,
-  // };
   const url = `${API_BASE_URL}/tables`;
   const options = {
     method: 'POST',
@@ -113,8 +87,6 @@ export async function createTable(table, signal) {
     body: JSON.stringify({ data: table }),
     signal,
   };
-  // tables.push(newTable);
-  // return newTable;
   return await fetchJson(url, options);
 }
 
@@ -134,7 +106,6 @@ export async function readReservation(reservation_id, signal) {
     signal,
   };
   return await fetchJson(url, options);
-  //  return await fetchJson(url, { signal });
 }
 
 export async function updateTable(table_id, reservation_id, signal) {
@@ -146,5 +117,16 @@ export async function updateTable(table_id, reservation_id, signal) {
     signal,
   };
   console.log('body', options);
+  return await fetchJson(url, options);
+}
+
+export async function finishTable(table_id, signal) {
+  const url = `${API_BASE_URL}/tables/${table_id}/seat`;
+  const options = {
+    method: 'DELETE',
+    headers,
+    body: JSON.stringify({ data: { table_id: table_id } }),
+    signal,
+  };
   return await fetchJson(url, options);
 }

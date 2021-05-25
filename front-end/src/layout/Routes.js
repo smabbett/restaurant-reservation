@@ -18,9 +18,6 @@ import TableSeating from '../tables/TableSeating';
 function Routes() {
   return (
     <Switch>
-      <Route path="/reservations/:reservation_id/seat">
-        <TableSeating />
-      </Route>
       <Route exact={true} path="/">
         <Redirect to={'/dashboard'} />
       </Route>
@@ -32,6 +29,9 @@ function Routes() {
       </Route>
       <Route path="/dashboard">
         <Dashboard date={today()} />
+      </Route>
+      <Route path="/reservations/:reservation_id/seat">
+        <TableSeating />
       </Route>
       <Route path="/reservations/new">
         <ReservationCreate />

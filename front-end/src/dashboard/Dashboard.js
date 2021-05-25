@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { listReservations, listTables } from '../utils/api';
 import ErrorAlert from '../layout/ErrorAlert';
 import useQuery from '../utils/useQuery';
-import { previous, next } from '../utils/date-time';
+import { previous, next, today } from '../utils/date-time';
 import { useHistory } from 'react-router';
 import ReservationList from '../reservation/ReservationList';
 import TableList from '../tables/TableList';
@@ -22,8 +22,8 @@ function Dashboard({ date }) {
 
   const history = useHistory();
   const query = useQuery().get('date');
-
   if (query) date = query;
+
   //should I be able to change the date to loadDashboard for previous and next date?
 
   useEffect(loadDashboard, [date]);

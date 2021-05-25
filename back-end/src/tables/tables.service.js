@@ -20,9 +20,18 @@ async function read(table_id) {
   return knex('tables').select('*').where({ table_id: table_id }).first();
 }
 
+async function finish(table_id) {
+  return knex('tables')
+    .select('*')
+    .where({ table_id: table_id })
+    .update('reservation_id', null)
+    .returning('*');
+}
+
 module.exports = {
   create,
   list,
   read,
   update,
+  finish,
 };

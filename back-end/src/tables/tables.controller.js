@@ -79,6 +79,16 @@ async function tableNotOccupied(req, res, next) {
   }
   next();
 }
+async function tableOccupied(req, res, next) {
+  const { reservation_id } = res.locals.table;
+  if (!reservation_id) {
+    return next({
+      status: 400,
+      message: 'Table is not occupied.',
+    });
+  }
+  next();
+}
 
 async function create(req, res) {
   const newTable = await service.create(req.body.data);
@@ -102,6 +112,11 @@ async function update(req, res) {
   res.json({ data });
 }
 
+async function finish(req, res) {
+  const { table_id } = req.params;
+  const data = await service.finish(table_id);
+  res.json({ data });
+}
 module.exports = {
   create: [
     hasOnlyValidProperties,
@@ -118,5 +133,10 @@ module.exports = {
     validCapacity,
     tableNotOccupied,
     asyncErrorBoundary(update),
+  ],
+  finish: [
+    asyncErrorBoundary(tableExists),
+    tableOccupied,
+    asyncErrorBoundary(finish),
   ],
 };
