@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { listReservations, listTables } from '../utils/api';
 import ErrorAlert from '../layout/ErrorAlert';
 import useQuery from '../utils/useQuery';
-import { previous, next, today } from '../utils/date-time';
+import { previous, next } from '../utils/date-time';
 import { useHistory } from 'react-router';
 import ReservationList from '../reservation/ReservationList';
 import TableList from '../tables/TableList';
@@ -79,6 +79,7 @@ function Dashboard({ date }) {
       <ErrorAlert error={reservationsError} />
       <ReservationList reservations={reservations} />
       <TableList tables={tables} />
+      {/* pass in setTables */}
     </main>
   );
 }

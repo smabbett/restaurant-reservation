@@ -35,7 +35,10 @@ async function reservationExists(req, res, next) {
     res.locals.reservation = reservation;
     return next();
   }
-  next({ status: 404, message: 'Reservation cannot be found.' });
+  next({
+    status: 404,
+    message: `Reservation ${reservation_id} cannot be found.`,
+  });
 }
 function hasOnlyValidProperties(req, res, next) {
   const { data = {} } = req.body;
@@ -59,6 +62,8 @@ const hasRequiredProperties = hasProperties(
   'people'
 );
 
+const hasRequiredUpdateProperties = hasProperties('status');
+
 function hasPeople(req, res, next) {
   const { people } = req.body.data;
   const validNumber = Number.isInteger(people);
@@ -66,6 +71,16 @@ function hasPeople(req, res, next) {
     return next({
       status: 400,
       message: 'Number of people entered is an invalid number.',
+    });
+  }
+  next();
+}
+function hasStatusBooked(req, res, next) {
+  const { status } = res.locals.reservation;
+  if (!status === 'booked') {
+    return next({
+      status: 400,
+      message: 'Reservation status incorrect. Reservation cannot be updated.',
     });
   }
   next();
@@ -128,9 +143,19 @@ async function create(req, res) {
   });
 }
 
-async function read(req, res, next) {
+function read(req, res, next) {
   const { reservation } = res.locals;
   res.json({ data: reservation });
+}
+
+async function updateStatus(req, res, next) {
+  const { reservation_id } = req.params;
+  const updatedReservation = {
+    ...req.body.data,
+    reservation_id,
+  };
+  const reservation = await service.updateStatus(updatedReservation);
+  res.json({ data: reservation[0] });
 }
 
 module.exports = {
@@ -144,4 +169,10 @@ module.exports = {
   ],
   listByDate: asyncErrorBoundary(listByDate),
   read: [asyncErrorBoundary(reservationExists), read],
+  updateStatus: [
+    hasRequiredUpdateProperties,
+    asyncErrorBoundary(reservationExists),
+    hasStatusBooked,
+    asyncErrorBoundary(updateStatus),
+  ],
 };

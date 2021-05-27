@@ -11,14 +11,13 @@ function TableList({ tables }) {
       'Is this table ready to seat new guests? This cannot be undone.'
     );
     if (result) {
-      console.log('finish', target.value);
-      const abortController = new AbortController();
-      finishTable(
-        target.value,
+      const tableId = target.id;
 
-        abortController.signal
-      ).then(() => {
+      const abortController = new AbortController();
+
+      finishTable(tableId, abortController.signal).then(() => {
         history.push('/');
+        //history.push('/dashboard');
       });
     }
   }
@@ -41,7 +40,8 @@ function TableList({ tables }) {
           // <button className="btn btn-primary" onClick={finishTable}>
           <button
             data-table-id-finish={table.table_id}
-            value={table.table_id}
+            value={table.reservation_id}
+            id={table.table_id}
             className="btn btn-primary"
             onClick={handleFinish}
           >

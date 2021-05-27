@@ -13,14 +13,19 @@ function ReservationCard({ reservation }) {
       <td>{reservation.reservation_date}</td>
       <td>{reservation.reservation_time}</td>
       <td>{reservation.people}</td>
-      <td>
-        <Link
-          className="btn btn-primary mr-2"
-          to={`reservations/${reservation.reservation_id}/seat`}
-        >
-          Seat
-        </Link>
+      <td data-reservation-id-status={reservation.reservation_id}>
+        {reservation.status}
       </td>
+      {reservation.status === 'booked' ? (
+        <td>
+          <Link
+            className="btn btn-primary mr-2"
+            to={`/reservations/${reservation.reservation_id}/seat`}
+          >
+            Seat
+          </Link>
+        </td>
+      ) : null}
     </tr>
   );
 }

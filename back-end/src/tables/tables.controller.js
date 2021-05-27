@@ -57,7 +57,7 @@ async function reservationExists(req, res, next) {
   });
 }
 
-async function validCapacity(req, res, next) {
+function validCapacity(req, res, next) {
   const { people } = res.locals.reservation;
   const { capacity } = res.locals.table;
   if (capacity < people) {
@@ -69,7 +69,7 @@ async function validCapacity(req, res, next) {
   next();
 }
 
-async function tableNotOccupied(req, res, next) {
+function tableNotOccupied(req, res, next) {
   const { reservation_id } = res.locals.table;
   if (reservation_id) {
     return next({
@@ -79,7 +79,7 @@ async function tableNotOccupied(req, res, next) {
   }
   next();
 }
-async function tableOccupied(req, res, next) {
+function tableOccupied(req, res, next) {
   const { reservation_id } = res.locals.table;
   if (!reservation_id) {
     return next({
@@ -114,7 +114,9 @@ async function update(req, res) {
 
 async function finish(req, res) {
   const { table_id } = req.params;
-  const data = await service.finish(table_id);
+  //const { table_id } = req.body.data;
+  const { reservation_id } = res.locals.table;
+  const data = await service.finish(table_id, reservation_id);
   res.json({ data });
 }
 module.exports = {
