@@ -42,6 +42,9 @@ async function reservationExists(req, res, next) {
 }
 function hasOnlyValidProperties(req, res, next) {
   const { data = {} } = req.body;
+  //
+  res.locals.reservation = req.body.data;
+  //
   const invalidFields = Object.keys(data).filter((field) => {
     !VALID_PROPERTIES.includes(field);
   });
@@ -77,10 +80,10 @@ function hasPeople(req, res, next) {
 }
 function hasStatusBooked(req, res, next) {
   const { status } = res.locals.reservation;
-  if (!status === 'booked') {
+  if (status === 'seated' || status === 'finished') {
     return next({
       status: 400,
-      message: 'Reservation status incorrect. Reservation cannot be updated.',
+      message: `Reservation status ${status} invalid.`,
     });
   }
   next();
@@ -154,8 +157,32 @@ async function updateStatus(req, res, next) {
     ...req.body.data,
     reservation_id,
   };
-  const reservation = await service.updateStatus(updatedReservation);
-  res.json({ data: reservation[0] });
+  const updatedRes = await service.updateStatus(updatedReservation);
+  res.json({ data: updatedRes[0] });
+}
+function hasValidStatus(req, res, next) {
+  //check the status in the request
+  const { status } = req.body.data;
+  const validStatus = ['booked', 'seated', 'finished'];
+  if (!validStatus.includes(status)) {
+    return next({
+      status: 400,
+      message: `Status ${status} is not valid.`,
+    });
+  }
+  next();
+}
+
+function hasNotFinishedStatus(req, res, next) {
+  //check the status in the reservation being updated
+  const { status } = res.locals.reservation;
+  if (status === 'finished') {
+    return next({
+      status: 400,
+      message: `Status ${status} cannot be updated.`,
+    });
+  }
+  next();
 }
 
 module.exports = {
@@ -164,7 +191,9 @@ module.exports = {
     hasOnlyValidProperties,
     hasRequiredProperties,
     hasPeople,
+
     hasValidDateTime,
+    hasStatusBooked,
     asyncErrorBoundary(create),
   ],
   listByDate: asyncErrorBoundary(listByDate),
@@ -172,7 +201,8 @@ module.exports = {
   updateStatus: [
     hasRequiredUpdateProperties,
     asyncErrorBoundary(reservationExists),
-    hasStatusBooked,
+    hasNotFinishedStatus,
+    hasValidStatus,
     asyncErrorBoundary(updateStatus),
   ],
 };
