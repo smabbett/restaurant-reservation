@@ -7,13 +7,14 @@ function ReservationCreate() {
   const history = useHistory();
 
   const [error, setError] = useState(null);
-  const [reservation, setReservation] = useState({
+  const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
     mobile_number: '',
     reservation_date: '',
     reservation_time: '',
     people: 0,
+    status: 'booked',
   });
 
   function cancelHandler() {
@@ -23,9 +24,9 @@ function ReservationCreate() {
   function submitHandler(event) {
     event.preventDefault();
     const abortController = new AbortController();
-    createReservation(reservation, abortController.signal)
+    createReservation(formData, abortController.signal)
       .then(() => {
-        history.push(`/dashboard/?date=${reservation.reservation_date}`);
+        history.push(`/dashboard/?date=${formData.reservation_date}`);
       })
       .catch(setError);
     return () => abortController.abort();
@@ -33,10 +34,11 @@ function ReservationCreate() {
 
   function changeHandler({ target }) {
     let newValue = target.value;
+    //should have validation of time, date, and people
     if (target.name === 'people') {
       newValue = Number(target.value);
     }
-    setReservation((previousReservation) => ({
+    setFormData((previousReservation) => ({
       ...previousReservation,
       [target.name]: newValue,
     }));
@@ -57,7 +59,7 @@ function ReservationCreate() {
               id="first_name"
               name="first_name"
               type="text"
-              value={reservation.first_name}
+              value={formData.first_name}
               onChange={changeHandler}
               required={true}
             />
@@ -72,7 +74,7 @@ function ReservationCreate() {
               id="last_name"
               name="last_name"
               type="text"
-              value={reservation.last_name}
+              value={formData.last_name}
               onChange={changeHandler}
               required={true}
             />
@@ -87,7 +89,7 @@ function ReservationCreate() {
               id="mobile_number"
               name="mobile_number"
               type="text"
-              value={reservation.mobile_number}
+              value={formData.mobile_number}
               onChange={changeHandler}
               required={true}
             />
@@ -106,7 +108,7 @@ function ReservationCreate() {
               type="date"
               placeholder="YYYY-MM-DD"
               pattern="\d{4}-\d{2}-\d{2}"
-              value={reservation.reservation_date}
+              value={formData.reservation_date}
               onChange={changeHandler}
               required={true}
             />
@@ -123,7 +125,7 @@ function ReservationCreate() {
               type="time"
               placeholder="HH:MM"
               pattern="[0-9]{2}:[0-9]{2}"
-              value={reservation.reservation_time}
+              value={formData.reservation_time}
               onChange={changeHandler}
               required={true}
             />
@@ -139,7 +141,7 @@ function ReservationCreate() {
               name="people"
               type="number"
               min="1"
-              value={reservation.people}
+              value={formData.people}
               onChange={changeHandler}
               required={true}
             />

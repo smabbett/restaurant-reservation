@@ -2,16 +2,16 @@ import React from 'react';
 import ReservationCard from './ReservationCard';
 
 function ReservationList({ reservations }) {
-  const tableRows = reservations.map((reservation) => {
-    if (reservation.status !== 'finished') {
-      return (
-        <ReservationCard
-          key={reservation.reservation_id}
-          reservation={reservation}
-        />
-      );
-    }
-    return null;
+  const activeReservations = reservations.filter(
+    (reservation) => reservation.status !== 'finished'
+  );
+  const tableRows = activeReservations.map((reservation) => {
+    return (
+      <ReservationCard
+        key={reservation.reservation_id}
+        reservation={reservation}
+      />
+    );
   });
 
   return (
@@ -19,9 +19,7 @@ function ReservationList({ reservations }) {
       <table className="table">
         <thead>
           <tr>
-            {/* <th scope="col">#</th> */}
             <th scope="col">Name</th>
-            {/* <th scope="col">Last Name</th> */}
             <th scope="col">Mobile Number</th>
             <th scope="col">Reservation Date</th>
             <th scope="col">Reservation Time</th>

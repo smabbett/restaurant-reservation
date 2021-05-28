@@ -70,7 +70,7 @@ function TableSeating() {
         abortController.signal
       ).then(() => {
         //history.push('/');
-        console.log('statusTableSeating', reservation.status);
+
         history.push('/dashboard');
       });
     }

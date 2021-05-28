@@ -26,6 +26,10 @@ const VALID_PROPERTIES = [
   'reservation_date',
   'reservation_time',
   'people',
+  'status',
+  'reservation_id',
+  'created_at',
+  'updated_at',
 ];
 
 async function reservationExists(req, res, next) {
@@ -191,7 +195,6 @@ module.exports = {
     hasOnlyValidProperties,
     hasRequiredProperties,
     hasPeople,
-
     hasValidDateTime,
     hasStatusBooked,
     asyncErrorBoundary(create),
