@@ -5,15 +5,17 @@ const asyncErrorBoundary = require('../errors/asyncErrorBoundary');
 /**
  * List handler for reservation resources
  */
-async function list(req, res) {
-  res.json({ data: await service.list() });
-}
+// async function list(req, res) {
+//   res.json({ data: await service.list() });
+// }
 
-async function listByDate(req, res) {
-  const { date } = req.query;
+async function list(req, res) {
+  const { date, mobile_number } = req.query;
 
   if (date) {
     res.json({ data: await service.listByDate(date) });
+  } else if (mobile_number) {
+    res.json({ data: await service.search(mobile_number) });
   } else {
     res.json({ data: await service.list() });
   }
@@ -199,7 +201,6 @@ module.exports = {
     hasStatusBooked,
     asyncErrorBoundary(create),
   ],
-  listByDate: asyncErrorBoundary(listByDate),
   read: [asyncErrorBoundary(reservationExists), read],
   updateStatus: [
     hasRequiredUpdateProperties,

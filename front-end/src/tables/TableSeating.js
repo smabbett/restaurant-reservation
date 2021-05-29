@@ -53,9 +53,6 @@ function TableSeating() {
   function submitHandler(event) {
     event.preventDefault();
     if (formData.table_id !== 'x') {
-      //setBookingStatus('seated');
-      console.log('reservation_id', reservation_id);
-      console.log('table_id', formData.table_id);
       const abortController = new AbortController();
       let status = 'seated';
       updateStatus(
