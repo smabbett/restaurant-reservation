@@ -5,9 +5,6 @@ const asyncErrorBoundary = require('../errors/asyncErrorBoundary');
 /**
  * List handler for reservation resources
  */
-// async function list(req, res) {
-//   res.json({ data: await service.list() });
-// }
 
 async function list(req, res) {
   const { date, mobile_number } = req.query;
@@ -157,6 +154,17 @@ function read(req, res, next) {
   res.json({ data: reservation });
 }
 
+async function update(req, res, next) {
+  const { reservation_id } = req.params;
+  console.log(reservation_id);
+  const updatedReservation = {
+    ...req.body.data,
+    reservation_id,
+  };
+  const updatedRes = await service.update(updatedReservation);
+  res.json({ data: updatedRes[0] });
+}
+
 async function updateStatus(req, res, next) {
   const { reservation_id } = req.params;
   const updatedReservation = {
@@ -169,7 +177,7 @@ async function updateStatus(req, res, next) {
 function hasValidStatus(req, res, next) {
   //check the status in the request
   const { status } = req.body.data;
-  const validStatus = ['booked', 'seated', 'finished'];
+  const validStatus = ['booked', 'seated', 'finished', 'cancelled'];
   if (!validStatus.includes(status)) {
     return next({
       status: 400,
@@ -202,6 +210,15 @@ module.exports = {
     asyncErrorBoundary(create),
   ],
   read: [asyncErrorBoundary(reservationExists), read],
+  update: [
+    hasRequiredProperties,
+    hasOnlyValidProperties,
+    asyncErrorBoundary(reservationExists),
+    hasPeople,
+    hasValidDateTime,
+    hasStatusBooked,
+    asyncErrorBoundary(update),
+  ],
   updateStatus: [
     hasRequiredUpdateProperties,
     asyncErrorBoundary(reservationExists),

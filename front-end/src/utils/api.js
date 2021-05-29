@@ -79,6 +79,28 @@ export async function createReservation(reservation, signal) {
   return await fetchJson(url, options);
 }
 
+export async function editReservation(reservation, signal) {
+  const url = `${API_BASE_URL}/reservations/${reservation.reservation_id}`;
+  const options = {
+    method: 'PUT',
+    headers,
+    body: JSON.stringify({ data: reservation }),
+    signal,
+  };
+  return await fetchJson(url, options);
+}
+
+// export async function destroyReservation(reservation_id, signal) {
+//   const url = `${API_BASE_URL}/reservations/${reservation_id}/`;
+//   const options = {
+//     method: 'DELETE',
+//     headers,
+//     body: JSON.stringify({ data: { reservation_id: reservation_id } }),
+
+//     signal,
+//   };
+//   return await fetchJson(url, options);
+// }
 export async function readReservation(reservation_id, signal) {
   const url = `${API_BASE_URL}/reservations/${reservation_id}`;
   const options = {

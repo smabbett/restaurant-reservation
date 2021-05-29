@@ -22,7 +22,7 @@ function TableSeating() {
 
   useEffect(() => {
     loadTables();
-  }, []);
+  }, [reservation_id]);
 
   function loadTables() {
     const abortController = new AbortController();

@@ -26,6 +26,13 @@ function read(reservation_id) {
     .first();
 }
 
+function update(updatedReservation) {
+  return knex('reservations')
+    .select('*')
+    .where({ reservation_id: reservation_id })
+    .update(updatedReservation, '*');
+}
+
 function updateStatus(updatedReservation) {
   return knex('reservations')
     .select('*')
@@ -43,6 +50,14 @@ function search(mobile_number) {
     .orderBy('reservation_date');
 }
 
+// function cancel(reservation_id) {
+//   return knex('reservations')
+//     .select('*')
+//     .where({ reservation_id: reservation_id })
+//     .update({ status: 'cancelled' })
+//     .returning('*');
+// }
+
 module.exports = {
   list,
   create,
@@ -50,4 +65,6 @@ module.exports = {
   read,
   updateStatus,
   search,
+  update,
+  //cancel,
 };
