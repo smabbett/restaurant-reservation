@@ -20,10 +20,10 @@ function ReservationList({ reservations }) {
           <thead className="thead-dark">
             <tr>
               <th scope="col">Name</th>
-              <th scope="col">Mobile Number</th>
-              <th scope="col">Reservation Date</th>
-              <th scope="col">Reservation Time</th>
-              <th scope="col">Number in Party</th>
+              <th scope="col">Phone</th>
+              <th scope="col">Date</th>
+              <th scope="col">Time</th>
+              <th scope="col">Party Size</th>
               <th scope="col">Status</th>
               <th className="text-center" scope="col">
                 Table Seating

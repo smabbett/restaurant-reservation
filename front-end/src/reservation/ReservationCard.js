@@ -36,7 +36,7 @@ function ReservationCard({ reservation }) {
       </td>
       {reservation.status === 'booked' ? (
         <>
-          <td>
+          <td className="text-center">
             <Link
               className="btn btn-primary mr-2 mb-3"
               to={`/reservations/${reservation.reservation_id}/seat`}

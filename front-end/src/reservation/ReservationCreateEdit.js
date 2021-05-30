@@ -26,21 +26,21 @@ function ReservationCreateEdit() {
   });
 
   useEffect(() => {
+    async function loadReservation() {
+      if (reservation_id) {
+        const abortController = new AbortController();
+        setError(null);
+        readReservation(reservation_id, abortController.signal)
+          .then(formatReservationDate)
+          .then(formatReservationTime)
+          .then(setFormData)
+          .catch(setError);
+        return () => abortController.abort();
+      }
+    }
+
     loadReservation();
   }, [reservation_id]);
-
-  function loadReservation() {
-    if (reservation_id) {
-      const abortController = new AbortController();
-      setError(null);
-      readReservation(reservation_id, abortController.signal)
-        .then(formatReservationDate)
-        .then(formatReservationTime)
-        .then(setFormData)
-        .catch(setError);
-      return () => abortController.abort();
-    }
-  }
 
   function cancelHandler() {
     history.goBack();

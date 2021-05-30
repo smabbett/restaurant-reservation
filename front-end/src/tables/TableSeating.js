@@ -17,18 +17,17 @@ function TableSeating() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    async function loadTables() {
+      const abortController = new AbortController();
+      setError(null);
+      readReservation(reservation_id, abortController.signal)
+        .then(setReservation)
+        .catch(setError);
+      listTables(abortController.signal).then(setTables).catch(setError);
+      return () => abortController.abort();
+    }
     loadTables();
   }, [reservation_id]);
-
-  function loadTables() {
-    const abortController = new AbortController();
-    setError(null);
-    readReservation(reservation_id, abortController.signal)
-      .then(setReservation)
-      .catch(setError);
-    listTables(abortController.signal).then(setTables).catch(setError);
-    return () => abortController.abort();
-  }
 
   let freeTables = tables.filter(
     (table) =>
