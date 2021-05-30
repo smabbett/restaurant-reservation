@@ -18,7 +18,7 @@ function TableCreate() {
 
   function submitHandler(event) {
     event.preventDefault();
-    //later add dashboard?
+
     createTable(table)
       .then(() => {
         history.push('/');

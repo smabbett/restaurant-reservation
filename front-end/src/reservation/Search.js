@@ -4,7 +4,6 @@ import { listReservations } from '../utils/api';
 import ReservationList from './ReservationList';
 
 function Search() {
-  //const history = useHistory();
   const [search, setSearch] = useState({
     mobile_number: '',
   });

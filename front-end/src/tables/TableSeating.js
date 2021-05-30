@@ -11,11 +11,7 @@ import ErrorAlert from '../layout/ErrorAlert';
 function TableSeating() {
   const history = useHistory();
   const { reservation_id } = useParams();
-  //const [bookingStatus, setBookingStatus] = useState('');
-  const [formData, setFormData] = useState({
-    table_id: '',
-  });
-
+  const [formData, setFormData] = useState({ table_id: '' });
   const [reservation, setReservation] = useState({});
   const [tables, setTables] = useState([]);
   const [error, setError] = useState(null);
@@ -55,19 +51,12 @@ function TableSeating() {
     if (formData.table_id !== 'x') {
       const abortController = new AbortController();
       let status = 'seated';
-      updateStatus(
-        // { status: 'seated' },
-        status,
-        reservation_id,
-        abortController.signal
-      );
+      updateStatus(status, reservation_id, abortController.signal);
       updateTable(
         parseInt(formData.table_id),
         reservation.reservation_id,
         abortController.signal
       ).then(() => {
-        //history.push('/');
-
         history.push('/dashboard');
       });
     }
@@ -92,12 +81,9 @@ function TableSeating() {
               <p>Party of {reservation.people}</p>
             </div>
           </div>
-          {/* </section>
-      <section className="row"> */}
           <div className="card col-md-5">
             <div className="card-body">
               <form onSubmit={submitHandler}>
-                {/* <div className="row mb-3"> */}
                 <div className="form-group">
                   <label
                     className="input-group-text"
@@ -127,7 +113,6 @@ function TableSeating() {
                     Cancel
                   </button>
                 </div>
-                {/* </div> */}
               </form>
               <div className="input-group mb-3">
                 <div className="input-group-prepend"></div>

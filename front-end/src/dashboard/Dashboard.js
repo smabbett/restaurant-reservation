@@ -18,7 +18,6 @@ function Dashboard({ date }) {
   const [reservationsError, setReservationsError] = useState(null);
 
   const [tables, setTables] = useState([]);
-  //const [tablesError, setTablesError] = useState(null);
 
   const history = useHistory();
   const query = useQuery().get('date');
@@ -31,7 +30,6 @@ function Dashboard({ date }) {
   function loadDashboard() {
     const abortController = new AbortController();
     setReservationsError(null);
-    //setTablesError(null)
     listReservations({ date }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
@@ -79,7 +77,6 @@ function Dashboard({ date }) {
       <ErrorAlert error={reservationsError} />
       <ReservationList reservations={reservations} />
       <TableList tables={tables} />
-      {/* pass in setTables */}
     </main>
   );
 }

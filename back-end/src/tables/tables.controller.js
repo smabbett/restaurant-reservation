@@ -117,7 +117,6 @@ async function update(req, res) {
   const { table_id } = req.params;
   const { reservation_id } = req.body.data;
   const updatedTable = {
-    // ...req.body.data,
     reservation_id: reservation_id,
     table_id: table_id,
   };

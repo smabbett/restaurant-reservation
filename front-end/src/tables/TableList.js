@@ -17,13 +17,11 @@ function TableList({ tables }) {
 
       finishTable(tableId, abortController.signal).then(() => {
         history.push('/');
-        //history.push('/dashboard');
       });
     }
   }
   const tableRows = tables.map((table) => (
     <tr key={table.table_id}>
-      {/* <th scope="row">{table.table_id}</th> */}
       <td>{table.table_name}</td>
       <td>{table.capacity}</td>
       <td
@@ -37,7 +35,6 @@ function TableList({ tables }) {
       </td>
       <td>
         {table.reservation_id && (
-          // <button className="btn btn-primary" onClick={finishTable}>
           <button
             data-table-id-finish={table.table_id}
             value={table.reservation_id}
@@ -57,7 +54,6 @@ function TableList({ tables }) {
       <table className="table">
         <thead>
           <tr>
-            {/* <th scope="col">#</th> */}
             <th scope="col">Table Name</th>
             <th scope="col">Capacity</th>
             <th scope="col">Status</th>

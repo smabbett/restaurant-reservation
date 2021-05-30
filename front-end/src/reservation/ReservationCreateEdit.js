@@ -68,7 +68,6 @@ function ReservationCreateEdit() {
 
   function changeHandler({ target }) {
     let newValue = target.value;
-    //should have validation of time, date, and people
     if (target.name === 'people') {
       newValue = Number(target.value);
     }
@@ -131,7 +130,6 @@ function ReservationCreateEdit() {
                 className="form-control"
                 id="mobile_number"
                 name="mobile_number"
-                // type="text"
                 type="tel"
                 value={formData.mobile_number}
                 onChange={changeHandler}

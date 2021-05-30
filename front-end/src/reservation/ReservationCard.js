@@ -5,7 +5,7 @@ import { updateStatus } from '../utils/api';
 function ReservationCard({ reservation }) {
   const history = useHistory();
 
-  function handleDelete({ target }) {
+  function handleDelete() {
     const result = window.confirm(
       'Do you want to cancel this reservation? This cannot be undone.'
     );

@@ -29,7 +29,7 @@ function read(reservation_id) {
 function update(updatedReservation) {
   return knex('reservations')
     .select('*')
-    .where({ reservation_id: reservation_id })
+    .where({ reservation_id: updatedReservation.reservation_id })
     .update(updatedReservation, '*');
 }
 
@@ -49,14 +49,6 @@ function search(mobile_number) {
     )
     .orderBy('reservation_date');
 }
-
-// function cancel(reservation_id) {
-//   return knex('reservations')
-//     .select('*')
-//     .where({ reservation_id: reservation_id })
-//     .update({ status: 'cancelled' })
-//     .returning('*');
-// }
 
 module.exports = {
   list,
