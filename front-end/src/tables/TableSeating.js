@@ -69,8 +69,11 @@ function TableSeating() {
     return (
       <main className="container">
         <ErrorAlert error={error} />
-        <section className="row mt-3">
-          <div key={reservation.reservation_id} className="card col-md-3">
+        <section className="row">
+          <div
+            key={reservation.reservation_id}
+            className="card col-md-3 mr-3 mt-3"
+          >
             <div className="card-header">
               <h5>
                 {reservation.first_name} {reservation.last_name}
@@ -81,20 +84,17 @@ function TableSeating() {
               <p>Party of {reservation.people}</p>
             </div>
           </div>
-          <div className="card col-md-5">
+          <div className="card col-md-5 mt-3">
             <div className="card-body">
               <form onSubmit={submitHandler}>
                 <div className="form-group">
-                  <label
-                    className="input-group-text"
-                    htmlFor="inputGroupSelect01"
-                  >
+                  <label className="input-group-text" htmlFor="table_id">
                     Open tables
                   </label>
                   <select
                     onChange={changeHandler}
                     className="custom-select"
-                    id="inputGroupSelect01"
+                    id="table_id"
                     name="table_id"
                   >
                     <option value="x">Choose a table...</option>
@@ -102,7 +102,7 @@ function TableSeating() {
                   </select>
                 </div>
                 <div>
-                  <button type="submit" className="btn btn-primary">
+                  <button type="submit" className="btn btn-primary mr-2">
                     Submit
                   </button>
                   <button
