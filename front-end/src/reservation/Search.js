@@ -28,7 +28,7 @@ function Search() {
 
   return (
     <main>
-      <h1 className="mb-3">Search</h1>
+      <h1 className="mb-3">Reservation Search</h1>
       <ErrorAlert error={error} />
       <section>
         <form onSubmit={submitHandler}>
