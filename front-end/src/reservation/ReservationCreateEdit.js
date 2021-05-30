@@ -27,7 +27,7 @@ function ReservationCreateEdit() {
 
   useEffect(() => {
     loadReservation();
-  }, []);
+  }, [reservation_id]);
 
   function loadReservation() {
     if (reservation_id) {
