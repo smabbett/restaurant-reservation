@@ -38,29 +38,27 @@ function ReservationCard({ reservation }) {
         <>
           <td>
             <Link
-              className="btn btn-primary mr-2"
+              className="btn btn-primary mr-2 mb-3"
               to={`/reservations/${reservation.reservation_id}/seat`}
             >
               Seat
             </Link>
-          </td>
-          <td>
+
             <Link
-              className="btn btn-primary mr-2"
+              className="btn btn-primary mr-2 mb-3"
               to={`/reservations/${reservation.reservation_id}/edit`}
             >
               Edit
             </Link>
-          </td>
-          <td>
-            <button
+
+            <div
               data-reservation-id-cancel={reservation.reservation_id}
               id={reservation.reservation_id}
-              className="btn btn-danger"
+              className="btn btn-danger mb-3"
               onClick={handleDelete}
             >
               Cancel
-            </button>
+            </div>
           </td>
         </>
       ) : null}

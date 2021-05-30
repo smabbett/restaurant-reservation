@@ -15,9 +15,9 @@ function ReservationList({ reservations }) {
   });
   if (reservations.length) {
     return (
-      <div>
+      <div className="container-fluid">
         <table className="table">
-          <thead>
+          <thead className="thead-dark">
             <tr>
               <th scope="col">Name</th>
               <th scope="col">Mobile Number</th>
@@ -25,7 +25,9 @@ function ReservationList({ reservations }) {
               <th scope="col">Reservation Time</th>
               <th scope="col">Number in Party</th>
               <th scope="col">Status</th>
-              <th scope="col">Table Seating</th>
+              <th className="text-center" scope="col">
+                Table Seating
+              </th>
             </tr>
           </thead>
           <tbody>{tableRows}</tbody>

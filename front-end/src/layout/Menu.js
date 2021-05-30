@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 /**
  * Defines the menu for this application.

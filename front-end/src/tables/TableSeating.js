@@ -69,7 +69,7 @@ function TableSeating() {
     return (
       <main className="container">
         <ErrorAlert error={error} />
-        <section className="row">
+        <section className="row mt-3">
           <div key={reservation.reservation_id} className="card col-md-3">
             <div className="card-header">
               <h5>
