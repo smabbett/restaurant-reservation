@@ -157,7 +157,6 @@ function read(req, res, next) {
 async function update(req, res, next) {
   const methodName = 'update';
   req.log.debug({ __filename, methodName });
-  console.log(res.locals.reservation);
   const { reservation_id } = res.locals.reservation;
   const updatedReservation = {
     ...req.body.data,

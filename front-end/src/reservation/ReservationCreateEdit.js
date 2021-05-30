@@ -75,8 +75,6 @@ function ReservationCreateEdit() {
       ...previousReservation,
       [target.name]: newValue,
     }));
-    const date = new Date();
-    console.log('formData, currentdate', formData, date);
   }
 
   if (!reservation_id || formData.status === 'booked') {

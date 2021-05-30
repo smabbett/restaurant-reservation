@@ -47,17 +47,5 @@
   },
   "keywords": [],
   "author": "Thinkful, Inc.",
-  "license": "UNLICENSED",
-  "dependencies": {
-    "jest": "^27.0.1",
-    "knex": "^0.95.5",
-    "nodemon": "^2.0.7",
-    "pg": "^8.6.0"
-  },
-  "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1"
-  }
+  "license": "UNLICENSED"
 }
