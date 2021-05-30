@@ -17,6 +17,8 @@ app.use(logger);
 app.use(cors());
 app.use(express.json());
 
+app.options('*', cors());
+
 app.use('/tables', tablesRouter);
 app.use('/reservations', reservationsRouter);
 
