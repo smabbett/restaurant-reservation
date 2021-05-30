@@ -155,8 +155,8 @@ function read(req, res, next) {
 }
 
 async function update(req, res, next) {
-  const methodName = 'update';
-  req.log.debug({ __filename, methodName });
+  // const methodName = 'update';
+  // req.log.debug({ __filename, methodName });
   const { reservation_id } = res.locals.reservation;
   const updatedReservation = {
     ...req.body.data,
@@ -164,7 +164,7 @@ async function update(req, res, next) {
   };
   const updatedRes = await service.update(updatedReservation);
   res.json({ data: updatedRes[0] });
-  req.log.trace({ __filename, methodName, return: true, data });
+  // req.log.trace({ __filename, methodName, return: true, data });
 }
 
 async function updateStatus(req, res, next) {
