@@ -103,6 +103,15 @@ function hasValidDateTime(req, res, next) {
   res_date.setHours(0, 0, 0, 0);
   currentDate.setHours(0, 0, 0, 0);
 
+  console.log(
+    'res_date.getTime(), currentDate.getTime(), reservation_time, currentTime',
+
+    res_date.getTime(),
+    currentDate.getTime(),
+    reservation_time,
+    currentTime
+  );
+
   const timeReg = /^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
 
   if (reservation_time.match(timeReg) === null) {
