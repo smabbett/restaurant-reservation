@@ -93,6 +93,9 @@ function hasStatusBooked(req, res, next) {
 }
 
 function hasValidDateTime(req, res, next) {
+  const methodName = 'hasValidDateTime';
+  req.log.debug({ __filename, methodName, body: req.body });
+
   const { reservation_date, reservation_time } = req.body.data;
   //adjusting the reservation_date to add timestamp, end of day
   let fix_date = reservation_date + ' 23:59:59.999Z';
@@ -131,6 +134,7 @@ function hasValidDateTime(req, res, next) {
     (res_date.getTime() === currentDate.getTime() &&
       reservation_time < currentTime)
   ) {
+    req.log.trace({ __filename, methodName, valid: false });
     return next({
       status: 400,
       message: 'Reservation must be booked for future date.',
@@ -148,6 +152,7 @@ function hasValidDateTime(req, res, next) {
       message: 'Restaurant closed on Tuesdays.',
     });
   }
+  req.log.trace({ __filename, methodName, valid: true });
   next();
 }
 
