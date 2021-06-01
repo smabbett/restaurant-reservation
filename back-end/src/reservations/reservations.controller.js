@@ -92,28 +92,38 @@ function hasStatusBooked(req, res, next) {
   next();
 }
 
+const convertTime12to24 = (time12h) => {
+  const [time, modifier] = time12h.split(' ');
+
+  let [hours, minutes] = time.split(':');
+
+  if (hours === '12') {
+    hours = '00';
+  }
+
+  if (modifier === 'PM') {
+    hours = parseInt(hours, 10) + 12;
+  }
+
+  return `${hours}:${minutes}`;
+};
+
 function hasValidDateTime(req, res, next) {
-  const methodName = 'hasValidDateTime';
-  req.log.debug({ __filename, methodName, body: req.body });
-
   const { reservation_date, reservation_time } = req.body.data;
-  //adjusting the reservation_date to add timestamp, end of day
-  let fix_date = reservation_date + ' 23:59:59.999Z';
-  let res_date = new Date(fix_date);
-  let currentDate = new Date();
-  let currentTime = currentDate.getHours() + ':' + currentDate.getMinutes();
-  //setHours to 0 so we can compare dates without time
-  res_date.setHours(0, 0, 0, 0);
-  currentDate.setHours(0, 0, 0, 0);
+  let today = new Date();
+  //currentDate in local time zone
+  //let currentDate = today.toLocaleDateString();
 
-  console.log(
-    'res_date.getTime(), currentDate.getTime(), reservation_time, currentTime',
+  //let todayTime = today.toLocaleTimeString();
+  //let currentTime = convertTime12to24(todayTime);
 
-    res_date.getTime(),
-    currentDate.getTime(),
-    reservation_time,
-    currentTime
-  );
+  //combine date and time to compare to today's date with minutes
+  let resDateTime = reservation_date + ' ' + reservation_time;
+
+  let resAsDate = new Date(resDateTime);
+  //currentDate and res_date are in format mm/dd/yyyy with toLocaleDateString
+  //let res_date = resAsDate.toLocaleDateString();
+  console.log(today, resAsDate);
 
   const timeReg = /^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
 
@@ -129,30 +139,25 @@ function hasValidDateTime(req, res, next) {
       message: 'Reservation must be between 10:30AM and 9:30PM.',
     });
   }
-  if (
-    res_date.getTime() < currentDate.getTime() ||
-    (res_date.getTime() === currentDate.getTime() &&
-      reservation_time < currentTime)
-  ) {
-    req.log.trace({ __filename, methodName, valid: false });
-    return next({
-      status: 400,
-      message: 'Reservation must be booked for future date.',
-    });
-  }
-  if (!res_date.getTime()) {
+  if (isNaN(resAsDate.getDate())) {
     return next({
       status: 400,
       message: 'reservation_date is not a valid date.',
     });
   }
-  if (res_date.getUTCDay() === 2) {
+  if (resAsDate < today) {
+    return next({
+      status: 400,
+      message: 'Reservation must be booked for future date.',
+    });
+  }
+
+  if (resAsDate && resAsDate.getDay() === 2) {
     return next({
       status: 400,
       message: 'Restaurant closed on Tuesdays.',
     });
   }
-  req.log.trace({ __filename, methodName, valid: true });
   next();
 }
 

@@ -28,12 +28,12 @@ function Search() {
 
   return (
     <main>
-      <h1 className="mb-3">Reservation Search</h1>
+      <h1 className="mb-3">Search</h1>
       <ErrorAlert error={error} />
       <section>
         <form onSubmit={submitHandler}>
           <div className="row mb-3">
-            <div className="col-6 form-group">
+            <div className="col-md-6 col-sm-10 form-group">
               <label className="form-label" htmlFor="mobile_number">
                 Mobile Number
               </label>
