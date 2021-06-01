@@ -111,19 +111,8 @@ const convertTime12to24 = (time12h) => {
 function hasValidDateTime(req, res, next) {
   const { reservation_date, reservation_time } = req.body.data;
   let today = new Date();
-  //currentDate in local time zone
-  //let currentDate = today.toLocaleDateString();
-
-  //let todayTime = today.toLocaleTimeString();
-  //let currentTime = convertTime12to24(todayTime);
-
-  //combine date and time to compare to today's date with minutes
   let resDateTime = reservation_date + ' ' + reservation_time;
-
   let resAsDate = new Date(resDateTime);
-  //currentDate and res_date are in format mm/dd/yyyy with toLocaleDateString
-  //let res_date = resAsDate.toLocaleDateString();
-  console.log(today, resAsDate);
 
   const timeReg = /^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
 
@@ -174,8 +163,6 @@ function read(req, res, next) {
 }
 
 async function update(req, res, next) {
-  // const methodName = 'update';
-  // req.log.debug({ __filename, methodName });
   const { reservation_id } = res.locals.reservation;
   const updatedReservation = {
     ...req.body.data,
@@ -183,7 +170,6 @@ async function update(req, res, next) {
   };
   const updatedRes = await service.update(updatedReservation);
   res.json({ data: updatedRes[0] });
-  // req.log.trace({ __filename, methodName, return: true, data });
 }
 
 async function updateStatus(req, res, next) {

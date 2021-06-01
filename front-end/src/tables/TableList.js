@@ -49,50 +49,9 @@ function TableList({ tables }) {
         )}
       </div>
     </div>
-
-    // <tr
-    //   key={table.table_id}
-    // className={classNames({
-    //   'bg-danger': table.reservation_id,
-    //   'bg-success': !table.reservation_id,
-    // })}
-    // >
-    //   <td>{table.table_name}</td>
-    //   <td>{table.capacity}</td>
-    //   <td data-table-id-status={table.table_id}>
-    //     {table.reservation_id ? 'Occupied' : 'Free'}
-    //   </td>
-    //   <td>
-    //     {table.reservation_id && (
-    //       <button
-    //         data-table-id-finish={table.table_id}
-    //         value={table.reservation_id}
-    //         id={table.table_id}
-    //         className="btn btn-primary"
-    //         onClick={handleFinish}
-    //       >
-    //         Finish
-    //       </button>
-    //     )}
-    //   </td>
-    // </tr>
   ));
 
-  return (
-    <div className="card-columns">
-      {tableRows}
-      {/* <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">Table Name</th>
-            <th scope="col">Capacity</th>
-            <th scope="col">Status</th>
-          </tr>
-        </thead>
-        <tbody>{tableRows}</tbody>
-      </table> */}
-    </div>
-  );
+  return <div className="card-columns">{tableRows}</div>;
 }
 
 export default TableList;
