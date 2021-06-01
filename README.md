@@ -23,8 +23,8 @@
 
 ## Deployment
 
-- [Periodic Tables - client](https://restaurant-reservation-client-e6jfxoqz7-smabbett.vercel.app/dashboard)
-- [Periodic Tables - server](https://restaurant-reservation-client-e6jfxoqz7-smabbett.vercel.app/dashboard)
+- [Periodic Tables - client](https://restaurant-reservation-client-snowy.vercel.app/dashboard)
+- [Periodic Tables - server](https://restaurant-reservation-virid.vercel.app/)
 
 ### API Paths
 
