@@ -26,11 +26,16 @@ function ReservationCard({ reservation }) {
     <tr key={reservation.reservation_id}>
       <td>
         {reservation.first_name} {reservation.last_name}
+        <br />
+        {reservation.mobile_number}
+        <br />
+        Party of {reservation.people}
       </td>
-      <td>{reservation.mobile_number}</td>
-      <td>{reservation.reservation_date}</td>
-      <td>{reservation.reservation_time}</td>
-      <td>{reservation.people}</td>
+      <td>
+        {reservation.reservation_date}
+        <br />
+        {reservation.reservation_time}
+      </td>
       <td data-reservation-id-status={reservation.reservation_id}>
         {reservation.status}
       </td>
@@ -61,7 +66,9 @@ function ReservationCard({ reservation }) {
             </div>
           </td>
         </>
-      ) : null}
+      ) : (
+        <td>{null}</td>
+      )}
     </tr>
   );
 }

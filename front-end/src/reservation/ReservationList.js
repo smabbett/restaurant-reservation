@@ -19,11 +19,10 @@ function ReservationList({ reservations }) {
         <table className="table">
           <thead className="thead-dark">
             <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Phone</th>
-              <th scope="col">Date</th>
-              <th scope="col">Time</th>
-              <th scope="col">Party Size</th>
+              <th scope="col">Guest</th>
+
+              <th scope="col">Date &amp; Time</th>
+
               <th scope="col">Status</th>
               <th className="text-center" scope="col">
                 Table Seating
